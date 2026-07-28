@@ -59,9 +59,9 @@ with ranked as (
 select
     id,
     case
-        when exit_status is null or exit_status < 0 then char(27) || '[2m…' || char(27) || '[0m  '
-        when exit_status = 0 then char(27) || '[32m✓' || char(27) || '[0m  '
-        else char(27) || '[31m✗' || char(27) || '[0m  '
+        when exit_status is null or exit_status < 0 then '…  '
+        when exit_status = 0 then '✓  '
+        else '✗  '
     end,
     strftime(
         case
