@@ -94,7 +94,6 @@ PRAGMA user_version = 2;
 EOF
     fi
     if [[ -z "${HISTDB_SESSION}" ]]; then
-        ${HISTDB_INSTALLED_IN:h}/histdb-migrate "${HISTDB_FILE}"
         HISTDB_HOST=${HISTDB_HOST:-"'$(sql_escape ${HOST})'"}
         HISTDB_SESSION=$(_histdb_query "select 1+max(session) from history inner join places on places.id=history.place_id where places.host = ${HISTDB_HOST}")
         HISTDB_SESSION="${HISTDB_SESSION:-0}"
