@@ -147,7 +147,7 @@ bindkey -M viins '^R' histdb-fzf-widget
 bindkey -M vicmd '^R' histdb-fzf-widget
 #+END_SRC
 
-The search starts with the command buffer and inserts the selected command without executing it. Results are grouped by command and directory, and are restricted to the current host.
+The search starts with the command buffer and inserts the selected command without executing it. Results initially include the current directory and its subdirectories, are grouped by command and directory, and are restricted to the current host.
 
 The picker supports these keys:
 

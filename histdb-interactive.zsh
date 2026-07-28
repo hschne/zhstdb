@@ -216,7 +216,7 @@ histdb-fzf-widget() {
     fi
 
     local output
-    output="$(_histdb_fzf_query global |
+    output="$(_histdb_fzf_query in |
         FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS-} ${FZF_CTRL_R_OPTS-}" "${fzf_command[@]}" \
             --ansi \
             --delimiter=$'\x1f' \
@@ -229,7 +229,7 @@ histdb-fzf-widget() {
             --highlight-line \
             --query="$LBUFFER" \
             --expect=enter,alt-j \
-            --header="$header_global" \
+            --header="$header_in" \
             --preview="${backend} preview {1}" \
             --preview-window=up:6:wrap \
             --bind='ctrl-r:toggle-sort' \
