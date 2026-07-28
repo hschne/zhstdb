@@ -33,7 +33,7 @@ It is also possible to merge multiple history databases together without conflic
 * Installation
 
 You will need ~sqlite3~ and the usual coreutils commands installed on your ~PATH~.
-To load and activate history recording you need to source ~sqlite-history.zsh~ from your shell in your zsh startup files.
+To load history recording and the FZF widget, source ~zsh-histdb.plugin.zsh~ from your Zsh startup files.
 
 Example for installing in ~$HOME/.oh-my-zsh/custom/plugins/zsh-histdb~ (note that ~oh-my-zsh~ is not required):
 
@@ -45,8 +45,7 @@ git clone https://github.com/larkery/zsh-histdb $HOME/.oh-my-zsh/custom/plugins/
 Add this to your ~$HOME/.zshrc~:
 
 #+BEGIN_SRC zsh
-source $HOME/.oh-my-zsh/custom/plugins/zsh-histdb/sqlite-history.zsh
-autoload -Uz add-zsh-hook
+source $HOME/.oh-my-zsh/custom/plugins/zsh-histdb/zsh-histdb.plugin.zsh
 #+END_SRC
 
 in your zsh startup files.
@@ -139,27 +138,25 @@ This query will find the most frequently issued command that is issued in the cu
 #+END_SRC
 
 This will find the most frequently issued command issued exactly in this directory, or if there are no matches it will find the most frequently issued command in any directory. You could use other fields like the hostname to restrict to suggestions on this host, etc.
-** Reverse isearch
-If you want a history-reverse-isearch type feature there is one defined in ~histdb-interactive.zsh~. If you source that file you will get a new widget called _histdb-isearch which you can bind to a key, e.g.
+** FZF history search
+The plugin defines an FZF-backed widget named ~histdb-fzf-widget~. Bind it after loading any standard FZF key bindings so it replaces their history widget:
 
 #+BEGIN_SRC sh
-source histdb-interactive.zsh
-bindkey '^r' _histdb-isearch
+bindkey -M emacs '^R' histdb-fzf-widget
+bindkey -M viins '^R' histdb-fzf-widget
+bindkey -M vicmd '^R' histdb-fzf-widget
 #+END_SRC
 
-This is like normal ~history-reverse-isearch~ except:
-- The search will start with the buffer contents automatically
-- The editing keys are all standard (because it does not really use the minibuffer).
+The search starts with the command buffer and inserts the selected command without executing it. Results are grouped by command and directory, and are restricted to the current host.
 
-  This means pressing ~C-a~ or ~C-e~ or similar will not exit the search like normal ~history-reverse-isearch~
-- The accept key (~RET~) does not cause the command to run immediately but instead lets you edit it
+The picker supports these keys:
 
-There are also a few extra keybindings:
-
-- ~M-j~ will ~cd~ to the directory for the history entry you're looking at.
-  This means you can search for ./run-this-command and then ~M-j~ to go to the right directory before running.
-- ~M-h~ will toggle limiting the search to the current host's history.
-- ~M-d~ will toggle limiting the search to the current directory and subdirectories' histories
+- ~M-a~ searches commands run in exactly the current directory (~histdb --at~).
+- ~M-i~ searches commands run in the current directory or below it (~histdb --in~).
+- ~M-g~ searches commands from every directory on the current host.
+- ~M-j~ changes to the selected command's directory before inserting it.
+- ~C-r~ toggles between fuzzy relevance and newest-first ordering.
+- ~C-/~ toggles the metadata preview.
 * Database schema
 The database lives by default in ~$HOME/.histdb/zsh-history.db~.
 You can look in it easily by running ~_histdb_query~, as this actually just fires up sqlite with the database.
