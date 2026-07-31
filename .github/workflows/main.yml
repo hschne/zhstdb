@@ -1,0 +1,23 @@
+name: Main
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v3
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install --yes sqlite3 zsh
+      - name: Check formatting
+        run: mise run format:check
+      - name: Check syntax
+        run: zsh -n *.zsh tests/*.zsh
+      - name: Run tests
+        run: zsh -f tests/run.zsh

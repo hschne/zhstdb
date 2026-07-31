@@ -1,0 +1,10 @@
+[tools]
+shfmt = "3.13.0"
+
+[tasks.format]
+description = "Format Zsh sources"
+run = "shfmt -w -ln zsh -i 4 -ci *.zsh tests/*.zsh"
+
+[tasks."format:check"]
+description = "Check Zsh formatting"
+run = "shfmt -d -ln zsh -i 4 -ci *.zsh tests/*.zsh"
