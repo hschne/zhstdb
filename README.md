@@ -1,8 +1,8 @@
-# ZSH History Database
+# zhstdb
 
 ## Overview
 
-`zsh-histdb` stores shell history in SQLite. Each entry records:
+`zhstdb` stores Zsh history in SQLite. Each entry records:
 
 - Command text
 - Working directory
@@ -12,6 +12,17 @@
 - Exit status
 
 The plugin also provides a query command and an FZF-backed ZLE widget.
+
+## Fork and rewrite
+
+`zhstdb` is a fork and substantial rewrite of
+[`larkery/zsh-histdb`](https://github.com/larkery/zsh-histdb). The original
+project established the SQLite history model and core shell integration this
+project builds on.
+
+This fork removes migration and Git-based synchronization support, restructures
+the implementation around testable modules, replaces the interactive search
+with an FZF-backed widget, and adds integration tests, formatting, and CI.
 
 ## Requirements
 
@@ -25,13 +36,13 @@ The plugin also provides a query command and an FZF-backed ZLE widget.
 Clone the repository and source the plugin from `.zshrc`:
 
 ```zsh
-git clone https://github.com/hschne/zsh-histdb \
-    "$HOME/.oh-my-zsh/custom/plugins/zsh-histdb"
-source "$HOME/.oh-my-zsh/custom/plugins/zsh-histdb/zsh-histdb.plugin.zsh"
+git clone https://github.com/hschne/zhstdb \
+    "$HOME/.oh-my-zsh/custom/plugins/zhstdb"
+source "$HOME/.oh-my-zsh/custom/plugins/zhstdb/zhstdb.plugin.zsh"
 ```
 
 The plugin works without Oh My Zsh; place it anywhere and source
-`zsh-histdb.plugin.zsh`.
+`zhstdb.plugin.zsh`.
 
 For systems without `column`, configure another command that accepts
 unit-separator-delimited input:
