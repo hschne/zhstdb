@@ -18,6 +18,8 @@ jobs:
       - name: Check formatting
         run: mise run format:check
       - name: Check syntax
-        run: zsh -n *.zsh tests/*.zsh
+        run: |
+          zsh -n *.zsh tests/*.zsh
+          bash -n doc/*.sh
       - name: Run tests
         run: zsh -f tests/run.zsh

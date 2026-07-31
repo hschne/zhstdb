@@ -1,67 +1,46 @@
+<div align="center">
+
 # zhstdb
 
-## Overview
+Zsh history in SQLite made simple. No binaries, no fluff.
 
-`zhstdb` stores Zsh history in SQLite. Each entry records:
+<a href="doc/assets/demo.mp4"><img src="doc/assets/demo.gif" alt="FZF history search filtering Git commands and previewing command metadata" width="100%"></a>
 
-- Command text
-- Working directory
-- Hostname
-- Shell session
-- Start time and duration
-- Exit status
-
-The plugin also provides a query command and an FZF-backed ZLE widget.
-
-## Fork and rewrite
-
-`zhstdb` is a fork and substantial rewrite of
-[`larkery/zsh-histdb`](https://github.com/larkery/zsh-histdb). The original
-project established the SQLite history model and core shell integration this
-project builds on.
-
-This fork removes migration and Git-based synchronization support, restructures
-the implementation around testable modules, replaces the interactive search
-with an FZF-backed widget, and adds integration tests, formatting, and CI.
-
-## Requirements
-
-- Zsh
-- SQLite
-- `column` and `iconv` for tabulated query output
-- FZF for interactive history search
+</div>
 
 ## Installation
 
-Clone the repository and source the plugin from `.zshrc`:
+zhstdb requires Zsh, standard core utilities, and SQLite. FZF is only required for the optional picker.
+
+**Git**:
 
 ```zsh
-git clone https://github.com/hschne/zhstdb \
-    "$HOME/.oh-my-zsh/custom/plugins/zhstdb"
-source "$HOME/.oh-my-zsh/custom/plugins/zhstdb/zhstdb.plugin.zsh"
+git clone https://github.com/hschne/zhstdb "$HOME/.local/share/zhstdb"
+source "$HOME/.local/share/zhstdb/zhstdb.plugin.zsh"
 ```
 
-The plugin works without Oh My Zsh; place it anywhere and source
-`zhstdb.plugin.zsh`.
-
-For systems without `column`, configure another command that accepts
-unit-separator-delimited input:
+**Zinit**:
 
 ```zsh
-HISTDB_TABULATE_CMD=(sed -e $'s/\x1f/\t/g')
+zinit light hschne/zhstdb
 ```
+
+## Usage
+
+History recording starts when the plugin is loaded. Use `histdb` to search, `histdb-top` to list frequent commands, and `histdb-fzf-widget` for interactive
+search.
 
 ## Configuration
 
-- `HISTDB_FILE` sets the database path. The default is
-  `$HOME/.histdb/zsh-history.db`.
-- `HISTDB_HOST` overrides the hostname stored with new entries.
-- `HISTDB_TABULATE_CMD` controls table formatting.
-- `HISTORY_IGNORE` is a Zsh glob for commands that should not be recorded.
-- `HISTDB_IGNORE_PATTERNS` contains regular expressions for uninteresting
-  commands. It defaults to common navigation and monitoring commands.
-
 Set configuration variables before sourcing the plugin.
+
+| Variable                 | Default                                   | Purpose                                                      |
+| ------------------------ | ----------------------------------------- | ------------------------------------------------------------ |
+| `HISTDB_FILE`            | `$HOME/.histdb/zsh-history.db`            | Database path                                                |
+| `HISTDB_HOST`            | `$HOST`                                   | Hostname stored with new entries                             |
+| `HISTDB_TABULATE_CMD`    | `column`                                  | Query output formatter                                       |
+| `HISTORY_IGNORE`         | Unset                                     | Zsh glob for commands that should not be recorded            |
+| `HISTDB_IGNORE_PATTERNS` | Common navigation and monitoring commands | Regular expressions for commands that should not be recorded |
 
 ## Querying history
 
@@ -76,26 +55,16 @@ histdb --desc --limit 100
 histdb --detail
 ```
 
-Terms are matched as a substring. Use `*` for a wildcard or `--exact` to
-match the complete command. Run `histdb --help` for all options.
-
-`--in` matches the selected directory and its descendants. `--at` matches
-only the selected directory.
-
-Use `histdb-top` for frequent commands and `histdb-top dir` for frequent
-working directories.
+Run `histdb --help` for all options.
 
 ### Forgetting entries
-
-`histdb --forget` displays matching entries and asks before deleting them.
-Use `--yes` to skip confirmation:
 
 ```text
 histdb old-command --forget
 histdb --at /removed/project --forget --yes
 ```
 
-## FZF history search
+## FZF
 
 The plugin defines `histdb-fzf-widget`. Bind it after loading other FZF key
 bindings:
@@ -140,18 +109,15 @@ _zsh_autosuggest_strategy_histdb() {
 ZSH_AUTOSUGGEST_STRATEGY=histdb
 ```
 
-## Database lifecycle
+## Database Notes
 
-New databases use schema version 2. Unsupported existing schemas fail with an
-explicit error; this fork does not migrate old databases.
+This fork does not migrate old databases, nor does it offer migrations. Just re-import your history.
 
-The database uses WAL mode. This project does not provide database merging or
-cross-machine synchronization. Use SQLite-aware backup or replication tooling,
-such as Litestream, when needed.
+This project does not provide database merging or cross-machine synchronization. Use SQLite-aware backup or replication tooling when needed.
 
-## Development
+## Contributing
 
-Install development tools and run the checks:
+Issues and pull requests are welcome. Install the development tools and run the checks before submitting changes:
 
 ```sh
 mise install
@@ -160,7 +126,18 @@ zsh -n *.zsh tests/*.zsh
 zsh -f tests/run.zsh
 ```
 
-Use `mise run format` to format all Zsh sources with `shfmt` 3.13.0.
+### Assets
 
-Tests use temporary real SQLite databases and a fake FZF adapter. They do not
-read or modify the user's history database.
+Regenerate the demo GIF, MP4, and still from `doc/demo.tape`. Requires [VHS](https://github.com/charmbracelet/vhs) and [FFmpeg](https://www.ffmpeg.org/).
+
+```sh
+doc/render-demo.sh
+```
+
+## Mentions
+
+`zhstdb` is a fork and substantial rewrite of [`larkery/zsh-histdb`](https://github.com/larkery/zsh-histdb). Many thanks to the original author!
+
+## License
+
+[MIT](LICENSE) © 2019 Tom Hinton, 2026 Hans Schnedlitz

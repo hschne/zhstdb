@@ -2,9 +2,15 @@
 shfmt = "3.13.0"
 
 [tasks.format]
-description = "Format Zsh sources"
-run = "shfmt -w -ln zsh -i 4 -ci *.zsh tests/*.zsh"
+description = "Format shell sources"
+run = """
+shfmt -w -ln zsh -i 4 -ci *.zsh tests/*.zsh
+shfmt -w -ln bash -i 4 -ci doc/*.sh
+"""
 
 [tasks."format:check"]
-description = "Check Zsh formatting"
-run = "shfmt -d -ln zsh -i 4 -ci *.zsh tests/*.zsh"
+description = "Check shell formatting"
+run = """
+shfmt -d -ln zsh -i 4 -ci *.zsh tests/*.zsh
+shfmt -d -ln bash -i 4 -ci doc/*.sh
+"""

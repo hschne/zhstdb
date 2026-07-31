@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>zhstdb — social preview</title>
+        <style>
+            :root {
+                --ink: #11121a;
+                --panel: #171821;
+                --line: #3b4261;
+                --text: #c0caf5;
+                --muted: #7f88b3;
+                --blue: #7aa2f7;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                width: 1280px;
+                height: 640px;
+                margin: 0;
+                overflow: hidden;
+            }
+
+            body {
+                position: relative;
+                color: var(--text);
+                background:
+                    linear-gradient(
+                        rgba(122, 162, 247, 0.045) 1px,
+                        transparent 1px
+                    ),
+                    linear-gradient(
+                        90deg,
+                        rgba(122, 162, 247, 0.045) 1px,
+                        transparent 1px
+                    ),
+                    var(--ink);
+                background-size: 40px 40px;
+                font-family:
+                    "SauceCodePro Nerd Font", "Source Code Pro", ui-monospace,
+                    monospace;
+            }
+
+            body::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(
+                    circle at 72% 50%,
+                    rgba(61, 89, 161, 0.26),
+                    transparent 48%
+                );
+            }
+
+            .copy {
+                position: absolute;
+                top: 82px;
+                left: 58px;
+                z-index: 2;
+                width: 510px;
+            }
+
+            h1 {
+                margin: 0;
+                font-size: 104px;
+                font-weight: 800;
+                line-height: 0.95;
+                letter-spacing: -0.07em;
+            }
+
+            h1 span {
+                color: var(--blue);
+            }
+
+            .tagline {
+                width: 480px;
+                margin: 30px 0 0;
+                color: var(--text);
+                font-size: 24px;
+                line-height: 1.5;
+                letter-spacing: -0.025em;
+            }
+
+            .url {
+                margin-top: 28px;
+                color: var(--muted);
+                font-size: 17px;
+            }
+
+            .shot {
+                position: absolute;
+                z-index: 1;
+                right: -118px;
+                bottom: -118px;
+                width: 850px;
+                padding: 10px;
+                border: 1px solid var(--line);
+                border-radius: 20px;
+                background: var(--panel);
+                box-shadow: 0 40px 100px rgba(0, 0, 0, 0.65);
+                transform: rotate(-2.5deg);
+                transform-origin: center;
+            }
+
+            .shot img {
+                display: block;
+                width: 100%;
+                border-radius: 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <main class="copy">
+            <h1>z<span>h</span>stdb</h1>
+            <p class="tagline">
+                Zsh history in SQLite made simple.<br />
+                No binaries, no fluff.
+            </p>
+            <p class="url">github.com/hschne/zhstdb</p>
+        </main>
+
+        <div class="shot">
+            <img src="../assets/preview.png" alt="zhstdb FZF history search" />
+        </div>
+    </body>
+</html>
